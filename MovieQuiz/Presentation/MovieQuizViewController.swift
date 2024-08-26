@@ -2,6 +2,8 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
    
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -46,6 +48,7 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         
+        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
@@ -57,6 +60,9 @@ final class MovieQuizViewController: UIViewController {
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
+        
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
@@ -64,6 +70,9 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = false
@@ -85,6 +94,9 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
+        
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
         
     }
     
