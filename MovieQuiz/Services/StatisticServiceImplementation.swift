@@ -50,7 +50,7 @@ final class StatisticServiceImplementation: StatisticServiceProtocol {
         gamesCount += 1
         bestGame.total += amount
         totalAccuracy = Double(correctAnswers) / (Double(gamesCount) * 10) * 100
-
+        
         if bestGame.isBetterThan(count) {
             bestGame.correct = count
             bestGame.date = Date()
