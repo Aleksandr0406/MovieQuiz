@@ -24,14 +24,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        statisticService = StatisticServiceImplementation()
-        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
         
         let questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        questionFactory.delegate = self
         self.questionFactory = questionFactory
         
         showLoadingIndicator()
@@ -86,6 +83,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz step: QuizStepViewModel) {
+        activityIndicator.isHidden = true
+        
         counterLabel.text = step.questionNumber
         imageView.image = step.image
         textLabel.text = step.question
@@ -101,13 +100,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
             self.showNextQuestionOrResults()
         }
     }
     
     private func showNextQuestionOrResults() {
+        activityIndicator.isHidden = false
+        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         
@@ -151,11 +152,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNetworkError(message: String) {
-        //hideLoadingIndicator()
         activityIndicator.isHidden = true
         
         let viewModel = AlertModel(
-            title: "Oшибка!",
+            title: "Что-то пошло не так(",
             message: message,
             buttonText: "Попробовать еще раз",
             completion: { [weak self] in
@@ -173,8 +173,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
     }
     
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
+    func didFailToLoadData() {
+        showNetworkError(message: "Невозможно загрузить данные")
     }
 }
 

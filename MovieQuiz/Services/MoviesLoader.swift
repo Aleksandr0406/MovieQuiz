@@ -6,16 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
 protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
 
-struct MoviesLoader: MoviesLoading {
+struct MoviesLoader: MoviesLoading  {
     private let networkClient = NetworkClient()
     private var mostPopularMoviesUrl: URL {
         guard let url = URL(string: "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf") else {
-            preconditionFailure("Unable to construct mostPopularMoviesUrl")
+            precondition(false)
         }
         return url
     }
