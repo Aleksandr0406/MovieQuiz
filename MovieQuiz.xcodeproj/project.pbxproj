@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		331901E82CA5718400579B5F /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331901E72CA5718400579B5F /* NetworkClient.swift */; };
+		331901EA2CA57E1700579B5F /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331901E92CA57E1700579B5F /* MostPopularMovies.swift */; };
+		331901EC2CA5811D00579B5F /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331901EB2CA5811D00579B5F /* MoviesLoader.swift */; };
 		334B4E792C986A9F00CF91D5 /* StatisticServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B4E782C986A9F00CF91D5 /* StatisticServiceProtocol.swift */; };
 		334B4E7B2C986BAB00CF91D5 /* GameResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B4E7A2C986BAB00CF91D5 /* GameResult.swift */; };
 		334B4E7D2C9870EE00CF91D5 /* StatisticServiceImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334B4E7C2C9870EE00CF91D5 /* StatisticServiceImplementation.swift */; };
@@ -33,6 +36,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		331901E72CA5718400579B5F /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		331901E92CA57E1700579B5F /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
+		331901EB2CA5811D00579B5F /* MoviesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoader.swift; sourceTree = "<group>"; };
 		334B4E782C986A9F00CF91D5 /* StatisticServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceProtocol.swift; sourceTree = "<group>"; };
 		334B4E7A2C986BAB00CF91D5 /* GameResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameResult.swift; sourceTree = "<group>"; };
 		334B4E7C2C9870EE00CF91D5 /* StatisticServiceImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticServiceImplementation.swift; sourceTree = "<group>"; };
@@ -89,6 +95,8 @@
 				339BE3092C938DCD0078D181 /* AlertPresenterProtocol.swift */,
 				334B4E782C986A9F00CF91D5 /* StatisticServiceProtocol.swift */,
 				334B4E7C2C9870EE00CF91D5 /* StatisticServiceImplementation.swift */,
+				331901E72CA5718400579B5F /* NetworkClient.swift */,
+				331901EB2CA5811D00579B5F /* MoviesLoader.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -101,6 +109,7 @@
 				339BE2FD2C90689E0078D181 /* QuizQuestion.swift */,
 				339BE3032C91B1400078D181 /* AlertModel.swift */,
 				334B4E7A2C986BAB00CF91D5 /* GameResult.swift */,
+				331901E92CA57E1700579B5F /* MostPopularMovies.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,8 +249,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				331901E82CA5718400579B5F /* NetworkClient.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				339BE3062C93825B0078D181 /* ResultAlertPresenter.swift in Sources */,
+				331901EA2CA57E1700579B5F /* MostPopularMovies.swift in Sources */,
 				339BE3042C91B1400078D181 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				334B4E7B2C986BAB00CF91D5 /* GameResult.swift in Sources */,
@@ -258,6 +269,7 @@
 				AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */,
 				339BE2FC2C90688E0078D181 /* QuizResultsViewModel.swift in Sources */,
 				AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */,
+				331901EC2CA5811D00579B5F /* MoviesLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +434,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuiz;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.abaliev.yandex.practicum.MovieQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -451,7 +463,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.MovieQuiz;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.abaliev.yandex.practicum.MovieQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -30,8 +30,8 @@ class ResultAlertPresenter: AlertPresenterProtocol {
             result.completion()
         }
         
-            alert.addAction(action)
-            delegate.present(alert, animated: true, completion: nil)
-        }
+        alert.addAction(action)
+        delegate.present(alert, animated: true, completion: nil)
+    }
 }
 
