@@ -19,15 +19,13 @@ struct MoviesLoader: MoviesLoading  {
         self.networkClient = networkClient
     }
     
-    private var mostPopularMoviesUrl: URL {
-        guard let url = URL(string: "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf") else {
-            precondition(false)
-        }
-        return url
+    private var mostPopularMoviesUrl: URL? {
+        URL(string: Constants.mostPopularMoviesPath)
     }
     
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
-        networkClient.fetch(url: mostPopularMoviesUrl) { result in
+        guard let url = mostPopularMoviesUrl else { return }
+        networkClient.fetch(url: url) { result in
             switch result {
             case .success(let data):
                 do {
@@ -43,3 +41,8 @@ struct MoviesLoader: MoviesLoading  {
     }
 }
 
+extension MoviesLoader {
+    enum Constants {
+        static let mostPopularMoviesPath = "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf"
+    }
+}
