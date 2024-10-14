@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class QuestionFactory: QuestionFactoryProtocol {
+    var indexSave: [Int] = []
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     private var movies: [MostPopularMovie] = []
@@ -43,10 +44,21 @@ class QuestionFactory: QuestionFactoryProtocol {
                   let index = (0..<self.movies.count).randomElement(),
                   let movie = movies[safe: index] else { return }
             
-            let question = generateQuestion(for: movie)
+            if indexSave.count == 10 {
+                indexSave = []
+            }
             
-            DispatchQueue.main.async {
-                self.delegate?.didReceiveNextQuestion(question: question)
+            if indexSave.contains(index) {
+                requestNextQuestion()
+            } else {
+                indexSave.append(index)
+                print(indexSave)
+                
+                let question = generateQuestion(for: movie)
+                
+                DispatchQueue.main.async {
+                    self.delegate?.didReceiveNextQuestion(question: question)
+                }
             }
         }
     }

@@ -25,9 +25,6 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
     
     func hideLoadingIndicator() {
     }
-    
-    func showNetworkError(message: String) {
-    }
 }
 
 final class MovieQuizPresenterTests: XCTestCase {

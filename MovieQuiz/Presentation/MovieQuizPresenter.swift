@@ -8,7 +8,7 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-    private var questionFactory: QuestionFactoryProtocol?
+    var questionFactory: QuestionFactoryProtocol?
     private let statisticService: StatisticServiceProtocol!
     private var viewController: (MovieQuizViewControllerProtocol)? = MovieQuizViewController()
     
@@ -35,7 +35,18 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func didFailToLoadData() {
-        viewController?.showNetworkError(message: "Невозможно загрузить данные")
+        viewController?.hideLoadingIndicator()
+        
+        let viewModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Невозможно загрузить данные",
+            buttonText: "Попробовать еще раз",
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.questionFactory?.loadData()
+            }
+        )
+        viewController?.showAlert(quiz: viewModel)
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -48,7 +59,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func isLastQuestion() -> Bool {
+    private func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
     
@@ -90,7 +101,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         proceedWithAnswer(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    func proceedWithAnswer(isCorrect: Bool) {
+    private func proceedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrectAnswer: isCorrect)
         
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
@@ -101,11 +112,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func proceedToNextQuestionOrResults() {
+    private func proceedToNextQuestionOrResults() {
         viewController?.showLoadingIndicator()
         viewController?.deleteBorderAfterAnswer()
         
-        if self.isLastQuestion() {
+        if isLastQuestion() {
             let viewModel = AlertModel(
                 title: "Раунд окончен!",
                 message: makeResultsMessage(),
@@ -122,7 +133,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func makeResultsMessage() -> String {
+    private func makeResultsMessage() -> String {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         
         let text = correctAnswers == questionsAmount ?

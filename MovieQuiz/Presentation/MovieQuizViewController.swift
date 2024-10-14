@@ -23,9 +23,10 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
         
-        presenter = MovieQuizPresenter(viewController: self)
+        imageView.backgroundColor = UIColor.clear
+        textLabel.backgroundColor = UIColor.clear
         
-        showLoadingIndicator()
+        presenter = MovieQuizPresenter(viewController: self)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -45,7 +46,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     // MARK: - Private functions
     
     func show(quiz step: QuizStepViewModel) {
-        activityIndicator.isHidden = true
+        hideLoadingIndicator()
         imageView.layer.borderColor = UIColor.clear.cgColor
         
         counterLabel.text = step.questionNumber
@@ -69,21 +70,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         self.alert = alert
         
         alert.presentAlert(quiz: quiz)
-    }
-    
-    func showNetworkError(message: String) {
-        hideLoadingIndicator()
-        
-        let viewModel = AlertModel(
-            title: "Что-то пошло не так(",
-            message: message,
-            buttonText: "Попробовать еще раз",
-            completion: { [weak self] in
-                guard let self = self else { return }
-                self.presenter.restartGame()
-            }
-        )
-        showAlert(quiz: viewModel)
     }
     
     func showLoadingIndicator() {
