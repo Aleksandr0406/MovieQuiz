@@ -46,7 +46,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     // MARK: - Private functions
     
     func show(quiz step: QuizStepViewModel) {
-        hideLoadingIndicator()
         imageView.layer.borderColor = UIColor.clear.cgColor
         
         counterLabel.text = step.questionNumber
@@ -58,8 +57,6 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
     
     func deleteBorderAfterAnswer() {
-        showLoadingIndicator()
-        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
     }

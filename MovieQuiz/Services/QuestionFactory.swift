@@ -44,7 +44,7 @@ class QuestionFactory: QuestionFactoryProtocol {
                   let index = (0..<self.movies.count).randomElement(),
                   let movie = movies[safe: index] else { return }
             
-            if indexSave.count == 10 {
+            if indexSave.count == movies.count {
                 indexSave = []
             }
             
@@ -61,6 +61,10 @@ class QuestionFactory: QuestionFactoryProtocol {
                 }
             }
         }
+    }
+    
+    func makeEmptyIndexSave() {
+        indexSave = []
     }
     
     private func generateQuestion(for movie: MostPopularMovie) -> QuizQuestion? {

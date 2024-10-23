@@ -22,6 +22,8 @@ class ResultAlertPresenter: AlertPresenterProtocol {
             preferredStyle: .alert
         )
         
+        alert.view.accessibilityIdentifier = "Раунд окончен"
+        
         let action = UIAlertAction(
             title: result.buttonText,
             style: .default

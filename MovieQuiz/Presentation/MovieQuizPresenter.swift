@@ -30,7 +30,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
     
     func didLoadDataFromServer() {
-        viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
@@ -55,6 +54,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         currentQuestion = question
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
+            self?.viewController?.hideLoadingIndicator()
             self?.viewController?.show(quiz: viewModel)
         }
     }
@@ -117,6 +117,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.deleteBorderAfterAnswer()
         
         if isLastQuestion() {
+            questionFactory?.makeEmptyIndexSave()
             let viewModel = AlertModel(
                 title: "Раунд окончен!",
                 message: makeResultsMessage(),
