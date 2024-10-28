@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class QuestionFactory: QuestionFactoryProtocol {
+    var indexSave: [Int] = []
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
     private var movies: [MostPopularMovie] = []
@@ -39,42 +40,60 @@ class QuestionFactory: QuestionFactoryProtocol {
     
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
+            guard let self = self,
+                  let index = (0..<self.movies.count).randomElement(),
+                  let movie = movies[safe: index] else { return }
             
-            guard let movie = self.movies[safe: index] else { return }
+            if indexSave.count == movies.count {
+                indexSave = []
+            }
             
-            var imageData = Data()
-            
-            do {
-                imageData = try Data(contentsOf: movie.resizedImageURL)
-            } catch {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    delegate?.didFailToLoadData()
+            if indexSave.contains(index) {
+                requestNextQuestion()
+            } else {
+                indexSave.append(index)
+                print(indexSave)
+                
+                let question = generateQuestion(for: movie)
+                
+                DispatchQueue.main.async {
+                    self.delegate?.didReceiveNextQuestion(question: question)
                 }
-                print("Failed to load image")
             }
-            
-            let rating = Float(movie.rating) ?? 0
-            
-            let questionsAndRating = ["Рейтинг этого фильма больше чем 7?" : rating > 7,
-                                      "Рейтинг этого фильма больше чем 8?" : rating > 8,
-                                      "Рейтинг этого фильма больше чем 9?" : rating > 9,
-                                      "Рейтинг этого фильма меньше чем 7?" : rating < 7,
-                                      "Рейтинг этого фильма меньше чем 8?" : rating < 8,
-                                      "Рейтинг этого фильма меньше чем 9?" : rating < 9
-            ]
-            
-            guard let text = questionsAndRating.keys.randomElement() else { return }
-            guard let correctAnswer = questionsAndRating[text] else { return }
-
-            let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
-            
+        }
+    }
+    
+    func makeEmptyIndexSave() {
+        indexSave = []
+    }
+    
+    private func generateQuestion(for movie: MostPopularMovie) -> QuizQuestion? {
+        guard let rating = Float(movie.rating),
+              let targetRate = (7...9).randomElement() else { return nil }
+        
+        let imageData = loadImageData(from: movie.resizedImageURL) ?? Data()
+        let isGreaterThan = Bool.random()
+        let comparisonText = isGreaterThan ? "больше" : "меньше"
+        let correctAnswer = isGreaterThan ? (rating > Float(targetRate)) : (rating < Float(targetRate))
+        let text = "Рейтинг этого фильма \(comparisonText) чем \(targetRate)?"
+        
+        let question = QuizQuestion(
+            image: imageData,
+            text: text,
+            correctAnswer: correctAnswer
+        )
+        return question
+    }
+    
+    private func loadImageData(from url: URL) -> Data? {
+        do {
+            return try Data(contentsOf: url)
+        } catch {
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.didReceiveNextQuestion(question: question)
+                self?.delegate?.didFailToLoadData()
             }
+            print("Failed to load image: \(error)")
+            return nil
         }
     }
 }
